@@ -1,13 +1,9 @@
-```js
 {
-"name": "Amanda Torres",
-"email": "amanda@torresconsulting.com",
-"business_type": "HR Consulting",
-"monthly_revenue": "$25,000",
-"biggest_challenge": "I'm completely overwhelmed with client delivery and have
-no time for sales. Every time I try to hire, it falls apart within 2 months. I
-need systems but don't know where to start.",
-"how_did_you_hear": "Podcast",
-"phone": "555-234-5678"
+  "name": "Amanda Torres",
+  "email": "amanda@torresconsulting.com",
+  "business_type": "HR Consulting",
+  "monthly_revenue": "$25,000",
+  "biggest_challenge": "I'm completely overwhelmed with client delivery and have no time for sales. Every time I try to hire, it falls apart within 2 months. I need systems but don't know where to start.",
+  "how_did_you_hear": "Podcast",
+  "phone": "555-234-5678"
 }
-```
