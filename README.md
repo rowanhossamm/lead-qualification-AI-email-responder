@@ -45,5 +45,7 @@ Expected fields (adjust names to your form fields):
   "qualificationStatus": "qualified",
   "responseEmail": "Hi John, ... (AI-generated email) ..."
 }
-<img width="1864" height="884" alt="Screenshot 2026-01-19 135130" src="https://github.com/user-attachments/assets/a68ed8bb-c150-4599-bf69-4d83d783c86c" />
+```
+<img width="1864" height="884" alt="Screenshot 2026-01-19 135130" src="https://github.com/user-attachments/assets/190c06ac-27ee-4e68-b848-cbb9518e8aac" />
+
 
