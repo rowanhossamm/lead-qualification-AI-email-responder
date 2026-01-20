@@ -2,6 +2,9 @@
 
 This n8n workflow receives a form submission via a webhook, normalizes key fields, qualifies the lead based on rules, and returns a response email (AI-generated for qualified leads, fallback message for unqualified).
 
+## Workflow Screenshot
+<img width="1864" height="884" alt="Screenshot 2026-01-19 135130" src="https://github.com/user-attachments/assets/3539e51c-afcc-47b1-aba3-ccf7ecbadcce" />
+
 ## Flow Overview
 
 1. **Webhook Trigger (POST)**
@@ -46,6 +49,17 @@ Expected fields (adjust names to your form fields):
   "responseEmail": "Hi John, ... (AI-generated email) ..."
 }
 ```
-<img width="1864" height="884" alt="Screenshot 2026-01-19 135130" src="https://github.com/user-attachments/assets/190c06ac-27ee-4e68-b848-cbb9518e8aac" />
 
+## Testing with Postman
+1. Method: POST  
+2. URL: <your n8n webhook URL>  
+3. Header: Content-Type: application/json  
+4. Body: raw JSON (see sample_payloads/)
+
+Expected response includes:
+- qualificationStatus: qualified | not_qualified
+- responseEmail: generated (qualified) or fallback (not qualified)
+
+## Demo Video
+Loom walkthrough: <LOOM_https://www.loom.com/share/e5790334927742eaacdd285453cf6b49LINK>
 
