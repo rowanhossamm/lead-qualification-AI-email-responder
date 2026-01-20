@@ -1,0 +1,293 @@
+{
+  "name": "Lead Qualification_RowanHossam",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "72c0725a-813b-4376-9896-75a24a405606",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "8f18fa76-e48f-4fd9-99e1-91d776baca81",
+      "name": "Webhook",
+      "webhookId": "72c0725a-813b-4376-9896-75a24a405606"
+    },
+    {
+      "parameters": {
+        "jsCode": "const revenueStr = ($json.monthly_revenue ?? '').replace(/[^0-9.-]+/g, '');\nconst revenueNumber = Number(revenueStr) || 0;\n\nconst challenge = ($json.biggest_challenge ?? '').toString().trim();\nconst challengeLength = challenge.length;\n\nreturn [\n  {\n    json: {\n      ...$json,\n      monthly_revenue_number: revenueNumber,\n      challenge_clean: challenge,\n      challenge_length: challengeLength,\n    },\n  },\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "dd7dbf86-4143-49e8-896f-a6405bbec87d",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "91c3f750-6154-4880-8659-4a3be336e7fa",
+              "leftValue": "={{ $json.monthly_revenue_number }}",
+              "rightValue": 10000,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            },
+            {
+              "id": "1f620ccb-31eb-4d5d-9c91-0bf630ad5a5b",
+              "leftValue": "={{ $json.challenge_length }}",
+              "rightValue": 50,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        416,
+        0
+      ],
+      "id": "8aaca2b7-d361-4782-ae1b-d2af99d635be",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Write a personalized email response to this lead.\n\nLead:\nName: {{ $('Webhook').item.json.body.name }}\nBusiness type: {{ $('Webhook').item.json.body.business_type }}\nMonthly revenue: {{ $('Webhook').item.json.body.monthly_revenue }}\nBiggest challenge: {{ $('Code in JavaScript').item.json.challenge_clean }}\nHow they heard: {{ $('Webhook').item.json.body.how_did_you_hear }}\n\nRequirements:\n- 120–180 words\n- Friendly + professional tone\n- Acknowledge their specific challenge with 1–2 concrete details\n- Position Sarah Chen as a business coach who helps service-based entrepreneurs scale to $50k/month using systems + hiring support\n- Soft CTA: invite them to book a call (no hard sell)\n- End with: — Sarah\nReturn ONLY the email body text.\n"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        624,
+        -96
+      ],
+      "id": "0a788e93-f720-4221-bc31-3351ff2e3cd4",
+      "name": "Message a model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "Q6mA2f0WKjHnBAV3",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0455b2a8-24d2-4340-b6a0-6f72bb3e617e",
+              "name": "name",
+              "value": "={{ $('Webhook').item.json.body.name }}",
+              "type": "string"
+            },
+            {
+              "id": "7566c190-ff1c-4757-a906-a5381544ad1d",
+              "name": "email",
+              "value": "={{ $('Webhook').item.json.body.email }}",
+              "type": "string"
+            },
+            {
+              "id": "fc3ae13b-5d78-4a4d-9ec5-5fc287009812",
+              "name": "qualification_status",
+              "value": "QUALIFIED",
+              "type": "string"
+            },
+            {
+              "id": "06f3f1d3-9444-4bcd-8af8-18a7dbe69e10",
+              "name": "response_email",
+              "value": "={{ $('Message a model').item.json.message.content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        976,
+        -96
+      ],
+      "id": "88524af3-8167-4462-a960-ec2a9f9aef82",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9d6a2dbc-3f94-4053-be06-29a8049d54bc",
+              "name": "name",
+              "value": "={{ $('Webhook').item.json.body.name }}",
+              "type": "string"
+            },
+            {
+              "id": "df939132-ecd3-43d2-95dc-de673ad78859",
+              "name": "email",
+              "value": "={{ $('Webhook').item.json.body.email }}",
+              "type": "string"
+            },
+            {
+              "id": "4cc7f0a2-4f3c-4675-92a3-01335a62ca82",
+              "name": "qualification_status",
+              "value": "NOT_QUALIFIED",
+              "type": "string"
+            },
+            {
+              "id": "a2226e48-e51a-42d5-a582-57d4f62e8379",
+              "name": "response_email",
+              "value": "Thank you for your interest. We'll review your information",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        624,
+        96
+      ],
+      "id": "4aa78b72-936c-4161-879f-3cbb1a7d0dcf",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        1312,
+        96
+      ],
+      "id": "2d868c76-67b2-4ade-af3a-ae9e66861f0f",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "bb4de17d-a87b-4431-99cf-d5b8f77aff04",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a4e07395695495cba7cfb93fa4233c5ff4d33199c6a7c11570a8daf3b351577d"
+  },
+  "id": "7kp9ujB8Gs0sLvqP5rvO0",
+  "tags": []
+}
