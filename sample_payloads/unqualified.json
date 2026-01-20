@@ -1,0 +1,21 @@
+{
+"name": "Mike Johnson",
+"email": "mike@newbiz.com",
+"business_type": "Life Coaching",
+"monthly_revenue": "$3,000",
+"biggest_challenge": "I just started my coaching business and I'm trying to
+get my first few clients. I've been posting on social media but nothing seems
+to be working yet.",
+"how_did_you_hear": "Facebook Ad",
+"phone": "555-345-6789"
+}
+
+{
+"name": "Lisa Park",
+"email": "lisa@parkdesign.com",
+"business_type": "Web Design",
+"monthly_revenue": "$18,000",
+"biggest_challenge": "Need more clients",
+"how_did_you_hear": "Google",
+"phone": "555-456-7890"
+}
