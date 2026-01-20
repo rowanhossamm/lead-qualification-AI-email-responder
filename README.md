@@ -61,5 +61,5 @@ Expected response includes:
 - responseEmail: generated (qualified) or fallback (not qualified)
 
 ## Demo Video
-Loom walkthrough: LOOM_https://www.loom.com/share/e5790334927742eaacdd285453cf6b49LINK>
+Loom walkthrough: https://www.loom.com/share/e5790334927742eaacdd285453cf6b49LINK
 
